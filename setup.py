@@ -50,15 +50,12 @@ setup(
         "rich",
         "click>=8.0.0",
         "click-option-group",
-        "openff-utilities",
         # Conda-only (must be in environment.yml):
         #   openff-toolkit, openff-interchange, openff-forcefields,
         #   openff-qcsubmit, chemper, openff-fragmenter-base,
-        #   forcebalance, geometric, openff-units
-        "qcportal>=0.50",
-        "qcengine>=0.25.0",
-        "qcelemental>=0.25.1",
-        "torsiondrive",
+        #   forcebalance, geometric, openff-units, openff-utilities,
+        #   qcportal, qcengine, qcelemental, torsiondrive
+        # (most openff/qc ecosystem packages are conda-only)
         "psutil",
     ],
     # Set up the main CLI entry points
