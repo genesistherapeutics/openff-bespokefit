@@ -53,13 +53,11 @@ setup(
         "openff-utilities",
         # Conda-only (must be in environment.yml):
         #   openff-toolkit, openff-interchange, openff-forcefields,
-        #   openff-qcsubmit, chemper, openff-fragmenter-base
-        "openff-units==0.2",
-        "forcebalance==1.9.6",
+        #   openff-qcsubmit, chemper, openff-fragmenter-base,
+        #   forcebalance, geometric, openff-units
         "qcportal>=0.50",
         "qcengine>=0.25.0",
         "qcelemental>=0.25.1",
-        "geometric==1",
         "torsiondrive",
         "psutil",
     ],
