@@ -1,11 +1,9 @@
 import json
 import os
-import subprocess
 from typing import Tuple
 
 import pytest
 import qcportal
-import redis
 from openff.fragmenter.fragment import Fragment, FragmentationResult
 from openff.qcsubmit.results import (
     BasicResult,
@@ -31,10 +29,6 @@ from qcportal.optimization import OptimizationRecord
 from qcportal.singlepoint import SinglepointRecord
 from qcportal.torsiondrive import TorsiondriveRecord
 
-from openff.bespokefit.executor.utilities.redis import (
-    expected_redis_config_version,
-    launch_redis,
-)
 from openff.bespokefit.schema.fitting import (
     BespokeOptimizationSchema,
     OptimizationSchema,
@@ -58,8 +52,6 @@ from openff.bespokefit.schema.targets import (
 from openff.bespokefit.utilities import Settings, current_settings
 from openff.bespokefit.utilities.smirks import SMIRKSettings
 from openff.bespokefit.workflows.bespoke import BespokeWorkflowFactory
-
-pytest_plugins = ("celery.contrib.pytest",)
 
 
 @pytest.fixture()
@@ -469,52 +461,6 @@ def bace_fragment_data() -> FragmentationResult:
             )
         ],
         provenance={},
-    )
-
-
-@pytest.fixture(scope="session")
-def redis_session(tmpdir_factory):
-    redis_exists_error = RuntimeError(
-        "It looks like a redis server is already running with the test "
-        "settings. Exiting early in-case this is a production redis server."
-    )
-    settings = current_settings()
-
-    try:
-        connection = redis.Redis(
-            port=5678, db=0, password=settings.BEFLOW_REDIS_PASSWORD
-        )
-
-        keys = connection.keys("*")
-        assert len(keys) == 0
-
-    except redis.ConnectionError:
-        pass
-    except AssertionError:
-        raise redis_exists_error
-    else:
-        raise redis_exists_error
-
-    launch_redis(
-        port=5678,
-        stderr_file=subprocess.DEVNULL,
-        stdout_file=subprocess.DEVNULL,
-        persistent=False,
-        directory=str(tmpdir_factory.mktemp("redis")),
-    )
-
-
-@pytest.fixture(scope="session")
-def redis_connection(redis_session) -> redis.Redis:
-    settings = current_settings()
-    return redis.Redis(port=5678, db=0, password=settings.BEFLOW_REDIS_PASSWORD)
-
-
-@pytest.fixture(scope="function", autouse=True)
-def reset_redis(redis_connection, monkeypatch):
-    redis_connection.flushdb()
-    redis_connection.set(
-        "openff-bespokefit:redis-version", expected_redis_config_version()
     )
 
 

@@ -42,7 +42,29 @@ setup(
     include_package_data=True,
     # Allows `setup.py test` to work correctly with pytest
     setup_requires=[] + pytest_runner,
-    install_requires=[],
+    install_requires=[
+        "numpy",
+        "pydantic>=1.10",
+        "pyyaml",
+        "tqdm",
+        "rich",
+        "click>=8.0.0",
+        "click-option-group",
+        "openff-utilities",
+        "openff-toolkit>=0.15",
+        "openff-interchange",
+        "openff-units",
+        "openff-forcefields",
+        "openff-qcsubmit>=0.50",
+        "forcebalance>=1.9.6",
+        "qcportal>=0.50",
+        "qcengine>=0.25.0",
+        "qcelemental>=0.25.1",
+        "chemper",
+        "geometric",
+        "torsiondrive",
+        "psutil",
+    ],
     # Set up the main CLI entry points
     entry_points={
         'console_scripts': [
